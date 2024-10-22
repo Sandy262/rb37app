@@ -4,17 +4,23 @@ import Todolist from "./Todolist";
 import "./App.css";
 
 function App() {
-  var [c, setC] = useState(0);
-  setInterval(() => {
-    setC(c + 1);
-  }, 1000);
-  useEffect(()=>{
-    console.log("App Component is Rendered")
-  })
+  var [todos,setTodos]=React.useState(["bat","ball","keeper"])
+  var [countries,setCountries]=React.useState([])
+
+  useEffect(()=>{  
+    fetch("https://restcountries.com/v3/all")
+    .then((res)=>{return res.json()})
+    .then((data)=>{setCountries(data)})
+  },[])
   return (
     <div className="border border-info p-2 m-2">
-      <h1>India</h1>
-      <Todolist></Todolist>
+      <ul>
+        {
+          countries.map((c,i)=>{
+            return<li key={i}>{c.name.common}</li>//key anedi isthene unique key is required for the list ane error raakundaa untundi//idi enduku ante react virtual dom comparision kosam each element ki unique keys isthunnaam
+          })
+        }
+      </ul>
     </div>
   );
 }
